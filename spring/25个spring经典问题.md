@@ -3,7 +3,7 @@
 1. 什么是Spring框架？Spring框架有哪些主要模块？
 > Spring框架是一个为Java应用程序的开发提供了综合、广泛的基础性支持的Java平台。Spring帮助开发者解决了开发中基础性的问题，使得开发人员可以专注于应用程序的开发。Spring框架本身亦是按照设计模式精心打造，这使得我们可以在开发环境中安心的集成Spring框架，不必担心Spring是如何在后台进行工作的。
 Spring框架至今已集成了20多个模块。这些模块主要被分如下图所示的核心容器、数据访问/集成,、Web、AOP（面向切面编程）、工具、消息和测试模块。
-![spring.png](pic/spring.png)
+![spring.png](../pic/spring.png)
 
 2. 使用Spring框架有什么好处？
 > •	Dependency Injection(DI) 方法使得构造器和JavaBean properties文件中的依赖关系一目了然。
