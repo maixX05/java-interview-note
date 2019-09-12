@@ -172,4 +172,65 @@ location /{
 ```
 ##七、HTTP反向代理
 反向代理除了实现负载均衡之外，还提供了如缓存来减少上游服务器的压力。
+1. 全局配置（proxy_cache)
+    ```
+    proxy_buffering                     on;
+    proxy_buffering_size                4k;
+    proxy_buffers                       512 4k;
+    proxy_busy_buffers_size             64k;
+    proxy_temp_file_write_size          256k;
+    proxy_cache_lock                    on;
+    proxy_cache_lock_timeout            200ms;
+    proxy_temp_path                     /opt/nginx/proxy_temp;
+    proxy_cache_path                    /opt/nginx/proxy_cache levels=1:2 key_zone=cache:512m 
+                                        inactive-5m max_size=8g;
+
+    proxy_connect_timeout               3s;
+    proxy_read_timeout                  5s;
+    proxy_send_timeout                  5s;
+    ```
+2. location配置
+    ```
+    location ~^/backend/(.*)${
+        #设置一致性哈希负载均衡
+        set_by_lua_file $consistent_key "/export/App/c.c3.cn/luna/luna_balancing_backedn.properties"
+
+        #失败重试
+        proxy_next_upstream error timeout http_500 http_502 http_504;
+        proxy_next_upstream timeout 5s;
+        proxy_next_upstream tries 5s;
+
+        #请求上游服务器
+        proxy_method  GET;
+        #不给上游服务器传递请求体
+        proxy_pass_request_body     off;
+        #不给上游服务器传递请求头
+        proxy_pass_request_headers  off;
+        #设置上游服务器的那些响应头不发送给客户端
+        proxy_hide_header           Vary;
+
+        #支持keepalive
+        proxy_http_version          1.1;
+        proxy_set_header Connection "";
+
+        #给上游服务器传递Reference Cookie和Host
+        proxy_set_header Referer $http_referer;
+        proxy_set_header Cookie $http_cookie;
+        proxy_set_header Host web.c.3.local;
+
+        proxy_pass http://backend;
+        addr_header upstream_addr $upstream_addr;
+    }
+    ```
+    也可配置开启gzip支持，减少网络传输的数据包大小。
+
+##八、HTTP动态负载均衡
+1. Consul+Consul-template
+    1.1 Consul-server
+    1.2 Consul_template
+    1.3 Java服务
+2. Consul+OpenResty
+
+
+##九、Nginx四层负载均衡
 
