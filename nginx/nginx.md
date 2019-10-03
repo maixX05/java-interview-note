@@ -1,10 +1,11 @@
-#Nginx
+> **-----------------------《亿级流量网站架构核心技术》学习笔记之Nginx----------------------------**
+# Nginx
 上有服务器配置：使用upstream server配置
 负载均衡算法：配置多个上有服务器
 失败重试机制；配置当超时或上游服务器不存货时，是否充实其他上有服务器
 服务器心跳检查：上有服务器的健康检查/心跳检查
 
-##一、upstream 配置
+## 一、upstream 配置
 ```
 upstream backend{
     server 192.168.74.1:8080  weight=1;
@@ -19,7 +20,7 @@ location /{
 }
 #以上的负载均衡的算法是轮询，是nginx默认的负载均衡算法。
 ```
-##二、负载均衡算法
+## 二、负载均衡算法
 负载均衡用来解决用户请求到来时如何选择upstream server进行处理，默认是采用round-robin（轮询），同时支持其他算法。
 1. round-robin:轮询，默认的负载均衡算法，即以轮询的方式将请求转发至上有服务器，铜鼓哦配合weight配置来基于权重的轮询。
 2. ip_hash:根据用户进行负载均衡，即相同的IP将负载到同一个upstream server
@@ -67,7 +68,7 @@ location /{
         consistent_key = consistent_key .. '_' .. newval
     end
     ```
-##三、失败重试
+## 三、失败重试
 主要有两部分配置：upstream server和proxy_pass.
 ```
 upstream backend{
@@ -91,7 +92,7 @@ location /test {
     addr_header upstream_addr $upstream_addr;
 }
 ```
-##四、健康检查
+## 四、健康检查
 Nginx对上游服务器的健康检查默认采用的时惰性策略，Nginx商业版提供了health_check进行主动的健康检查。当然也可以继承nginx_upstream_check_module模块来进行主动的健康检查，其支持TCP心跳和HTTP心跳来进行健康检查。
 1. TCP心跳检查
     ```
@@ -118,7 +119,7 @@ Nginx对上游服务器的健康检查默认采用的时惰性策略，Nginx商�
     #check_http_send:当上游服务器返回匹配的响应状态码时，则认为上游服务器存活
     #注：检查时间间隔不能太短，否则检查包太多会冲垮服务器
     ```
-##五、其他配置
+## 五、其他配置
 1. 域名上游服务器
     ```
     upstream backend{
@@ -143,7 +144,7 @@ Nginx对上游服务器的健康检查默认采用的时惰性策略，Nginx商�
     }
     ```
     down配置该服务器为永久不可用，当测试或者机器故障时，暂时通过配置临时摘掉该服务器。
-##六、长连接
+## 六、长连接
 通过keepalive指令配置长连接数量：
 通过该指令配置每个Worker进程与上游服务器可缓存的空闲连接的最大数量。当超出这个数量时最近最少使用的连接将被关闭。keepalive指令不限制Worker进程与上游服务器的总连接数。
 ```
@@ -170,7 +171,7 @@ location /{
     
 }
 ```
-##七、HTTP反向代理
+## 七、HTTP反向代理
 反向代理除了实现负载均衡之外，还提供了如缓存来减少上游服务器的压力。
 1. 全局配置（proxy_cache)
     ```
@@ -224,7 +225,7 @@ location /{
     ```
     也可配置开启gzip支持，减少网络传输的数据包大小。
 
-##八、HTTP动态负载均衡
+## 八、HTTP动态负载均衡
 1. Consul+Consul-template
     1.1 Consul-server
     1.2 Consul_template
@@ -232,5 +233,7 @@ location /{
 2. Consul+OpenResty
 
 
-##九、Nginx四层负载均衡
+## 九、Nginx四层负载均衡
+1. 静态负载均衡
+2. 动态负载均衡
 
