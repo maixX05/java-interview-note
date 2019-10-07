@@ -26,7 +26,7 @@ JRE：Java Runtime Environment 的简称，Java 运行环境，为 Java 的运�
     ```
     代码解读：因为 x 和 y 指向的是同一个引用，所以 == 也是 true，而 new String()方法则重写开辟了内存空间，所以 == 结果为 false，而 equals 比较的一直是值，所以结果都为 true。
 
-    equals 解读:
+    **equals 解读:**
     equals 本质上就是 ==，只不过 String 和 Integer 等重写了 equals 方法，把它变成了值比较。看下面的代码就明白了。
 
     首先来看默认情况下 equals 比较一个有相同值的对象，代码如下：
@@ -124,12 +124,16 @@ final 修饰的变量叫常量，常量必须初始化，初始化之后值就�
 String 不属于基础类型，基础类型有 8 种：byte、boolean、char、short、int、float、long、double，而 String 属于对象。
 
 7. **Java 中操作字符串都有哪些类？它们之间有什么区别？**
-操作字符串的类有：String、StringBuffer、StringBuilder。
+操作字符串的类有：**String**、**StringBuffer**、**StringBuilder**。
 三者区别：
-StringBuffer和StringBuilder都继承自抽象类AbstractStringBuilder。
-String 声明的是不可变的对象，每次操作都会生成新的 String 对象，然后将指针指向新的 String 对象，而 StringBuffer、StringBuilder 存储数据的字符数组没有被final修饰，说明值可以改变，抽象类AbstractStringBuilder内部都提供了一个自动扩容机制，当发现长度不够的时候(初始默认长度是16)，会自动进行扩容工作，扩展为原数组长度的2倍加2，创建一个新的数组，并将数组的数据复制到新数组，所以对于拼接字符串效率要比String要高。
-线程安全性：StringBuffer由于很多方法都被 synchronized 修饰了所以线程安全，但是当多线程访问时，加锁和释放锁的过程很平凡，所以效率相比StringBuilder要低。StringBuilder相反执行效率高，但是线程不安全。所以单线程环境下推荐使用 StringBuilder，多线程环境下推荐使用 StringBuffer。
-执行速度:StringBuilder > StringBuffer > String。
+
+    * StringBuffer和StringBuilder都继承自抽象类AbstractStringBuilder。
+
+    * String 声明的是不可变的对象，每次操作都会生成新的 String 对象，然后将指针指向新的 String 对象，而 StringBuffer、StringBuilder 存储数据的字符数组没有被final修饰，说明值可以改变，抽象类AbstractStringBuilder内部都提供了一个自动扩容机制，当发现长度不够的时候(初始默认长度是16)，会自动进行扩容工作，扩展为原数组长度的2倍加2，创建一个新的数组，并将数组的数据复制到新数组，所以对于拼接字符串效率要比String要高。
+
+    * 线程安全性：StringBuffer由于很多方法都被 synchronized 修饰了所以线程安全，但是当多线程访问时，加锁和释放锁的过程很平凡，所以效率相比StringBuilder要低。StringBuilder相反执行效率高，但是线程不安全。所以单线程环境下推荐使用 StringBuilder，多线程环境下推荐使用 StringBuffer。
+
+    **执行速度:StringBuilder > StringBuffer > String。**
 
 8. **String str="i"与 String str=new String(“i”)一样吗？**
 不一样，因为内存的分配方式不一样。String str=“i"的方式，Java 虚拟机会将其分配到常量池中，如果常量池中有"i”，就返回"i"的地址，如果没有就创建"i"，然后返回"i"的地址；而 String str=new String(“i”) 则会被分到堆内存中新开辟一块空间。
@@ -181,20 +185,20 @@ equals()：字符串比较。
 不能，定义抽象类就是让其他类继承的，如果定义为 final 该类就不能被继承，这样彼此就会产生矛盾，所以 final 不能修饰抽象类。
 
 14. **接口和抽象类有什么区别？**
-实现：抽象类的子类使用 extends 来继承；接口必须使用 implements 来实现接口。
-构造函数：抽象类可以有构造函数；接口不能有。
-实现数量：类可以实现很多个接口；但只能继承一个抽象类【java只支持单继承】。
-访问修饰符：接口中的方法默认使用 public 修饰；抽象类中的抽象方法可以使用Public和Protected修饰，如果抽象方法修饰符为Private，则报错：The abstract method 方法名 in type Test can only set a visibility modifier, one of public or protected。
+* 实现：抽象类的子类使用 extends 来继承；接口必须使用 implements 来实现接口。
+* 构造函数：抽象类可以有构造函数；接口不能有。
+* 实现数量：类可以实现很多个接口；但只能继承一个抽象类【java只支持单继承】。
+* 访问修饰符：接口中的方法默认使用 public 修饰；抽象类中的抽象方法可以使用Public和Protected修饰，如果抽象方法修饰符为Private，则报错：The abstract method 方法名 in type Test can only set a visibility modifier, one of public or protected。
 
 15. **Java 中 IO 流分为几种？**
-按功能来分：输入流（input）、输出流（output）。
-按类型来分：字节流和字符流。
-字节流和字符流的区别是：字节流按 8 位传输以字节为单位输入输出数据，字符流按 16 位传输以字符为单位输入输出数据。
+* 按功能来分：输入流（input）、输出流（output）。
+* 按类型来分：字节流和字符流。
+* 字节流和字符流的区别是：字节流按 8 位传输以字节为单位输入输出数据，字符流按 16 位传输以字符为单位输入输出数据。
 
 16. **BIO、NIO、AIO 有什么区别？**
-BIO：Block IO 同步阻塞式 IO，就是我们平常使用的传统 IO，它的特点是模式简单使用方便，并发处理能力低。
-NIO：New IO 同步非阻塞 IO，是传统 IO 的升级，客户端和服务器端通过 Channel（通道）通讯，实现了多路复用。
-AIO：Asynchronous IO 是 NIO 的升级，也叫 NIO2，实现了异步非堵塞 IO ，异步 IO 的操作基于事件和回调机制。
+* BIO：Block IO 同步阻塞式 IO，就是我们平常使用的传统 IO，它的特点是模式简单使用方便，并发处理能力低。
+* NIO：New IO 同步非阻塞 IO，是传统 IO 的升级，客户端和服务器端通过 Channel（通道）通讯，实现了多路复用。
+* AIO：Asynchronous IO 是 NIO 的升级，也叫 NIO2，实现了异步非堵塞 IO ，异步 IO 的操作基于事件和回调机制。
 
 17. **Files的常用方法都有哪些？**
 Files. exists()：检测文件路径是否存在。
@@ -231,29 +235,35 @@ List、Set、Map 的区别主要体现在两个方面：元素是否有序、是
 三者之间的区别，如下表：
 
 21. **HashMap 和 Hashtable 有什么区别？**
-HashMap是继承自AbstractMap类，而HashTable是继承自Dictionary类。不过它们都实现了同时实现了map、Cloneable（可复制）、Serializable（可序列化）这三个接口。
-Hashtable比HashMap多提供了elments() 和contains() 两个方法。
-HashMap的key-value支持key-value，null-null，key-null，null-value四种。而Hashtable只支持key-value一种（即key和value都不为null这种形式）。既然HashMap支持带有null的形式，那么在HashMap中不能由get()方法来判断HashMap中是否存在某个键， 而应该用containsKey()方法来判断，因为使用get的时候，当返回null时，你无法判断到底是不存在这个key，还是这个key就是null，还是key存在但value是null。
-线程安全性不同：HashMap的方法都没有使用synchronized关键字修饰，都是非线程安全的，而Hashtable的方法几乎都是被synchronized关键字修饰的。但是，当我们需要HashMap是线程安全的时，怎么办呢？我们可以通过Collections.synchronizedMap(hashMap)来进行处理，亦或者我们使用线程安全的ConcurrentHashMap。ConcurrentHashMap虽然也是线程安全的，但是它的效率比Hashtable要高好多倍。因为ConcurrentHashMap使用了分段锁，并不对整个数据进行锁定。
-初始容量大小和每次扩充容量大小的不同：Hashtable默认的初始大小为11，之后每次扩充，容量变为原来的2n+1。HashMap默认的初始化大小为16。之后每次扩充，容量变为原来的2倍。
-计算hash值的方法不同：为了得到元素的位置，首先需要根据元素的 KEY计算出一个hash值，然后再用这个hash值来计算得到最终的位置。Hashtable直接使用对象的hashCode。hashCode是JDK根据对象的地址或者字符串或者数字算出来的int类型的数值。然后再使用除留余数发来获得最终的位置。
-22. 如何决定使用 HashMap 还是 TreeMap？
+* HashMap是继承自AbstractMap类，而HashTable是继承自Dictionary类。不过它们都实现了同时实现了map、Cloneable（可复制）、Serializable（可序列化）这三个接口。
+
+* Hashtable比HashMap多提供了elments() 和contains() 两个方法。
+
+* HashMap的key-value支持key-value，null-null，key-null，null-value四种。而Hashtable只支持key-value一种（即key和value都不为null这种形式）。既然HashMap支持带有null的形式，那么在HashMap中不能由get()方法来判断HashMap中是否存在某个键， 而应该用containsKey()方法来判断，因为使用get的时候，当返回null时，你无法判断到底是不存在这个key，还是这个key就是null，还是key存在但value是null。
+
+* 线程安全性不同：HashMap的方法都没有使用synchronized关键字修饰，都是非线程安全的，而Hashtable的方法几乎都是被synchronized关键字修饰的。但是，当我们需要HashMap是线程安全的时，怎么办呢？我们可以通过Collections.synchronizedMap(hashMap)来进行处理，亦或者我们使用线程安全的ConcurrentHashMap。ConcurrentHashMap虽然也是线程安全的，但是它的效率比Hashtable要高好多倍。因为ConcurrentHashMap使用了分段锁，并不对整个数据进行锁定。
+
+* 初始容量大小和每次扩充容量大小的不同：Hashtable默认的初始大小为11，之后每次扩充，容量变为原来的2n+1。HashMap默认的初始化大小为16。之后每次扩充，容量变为原来的2倍。
+
+* 计算hash值的方法不同：为了得到元素的位置，首先需要根据元素的 KEY计算出一个hash值，然后再用这个hash值来计算得到最终的位置。Hashtable直接使用对象的hashCode。hashCode是JDK根据对象的地址或者字符串或者数字算出来的int类型的数值。然后再使用除留余数发来获得最终的位置。
+
+22. **如何决定使用 HashMap 还是 TreeMap？**
 对于在 Map 中插入、删除、定位一个元素这类操作，HashMap 是最好的选择，因为相对而言 HashMap 的插入会更快，但如果你要对一个 key 集合进行有序的遍历，那 TreeMap 是更好的选择。
 
-23.说一下 HashMap 的实现原理？
+23. **说一下 HashMap 的实现原理？**
 HashMap 基于 Hash 算法实现的，我们通过 put(key,value)存储，get(key)来获取。当传入 key 时，HashMap 会根据 key. hashCode() 计算出 hash 值，根据 hash 值将 value 保存在 bucket 里。当计算出的 hash 值相同时，我们称之为 hash 冲突，HashMap 的做法是用链表和红黑树存储相同 hash 值的 value。当 hash 冲突的个数比较少时，使用链表否则使用红黑树。
 
-24.说一下 HashSet 的实现原理？
+24. **说一下 HashSet 的实现原理？**
 HashSet 是基于 HashMap 实现的，HashSet 底层使用 HashMap 来保存所有元素，因此 HashSet 的实现比较简单，相关 HashSet 的操作，基本上都是直接调用底层 HashMap 的相关方法来完成，HashSet 不允许重复的值。
 
-25.ArrayList 和 LinkedList 的区别是什么？
+25. ArrayList 和 LinkedList 的区别是什么？
 
 数据结构实现：ArrayList 是动态数组的数据结构实现，而 LinkedList 是双向链表的数据结构实现。
 随机访问效率：ArrayList 比 LinkedList 在随机访问的时候效率要高，因为 LinkedList 是线性的数据存储方式，所以需要移动指针从前往后依次查找。
 增加和删除效率：在非首尾的增加和删除操作，LinkedList 要比 ArrayList 效率要高，因为 ArrayList 增删操作要影响数组内的其他数据的下标。
 综合来说，在需要频繁读取集合中的元素时，更推荐使用 ArrayList，而在插入和删除操作较多时，更推荐使用 LinkedList。
 
-26.如何实现数组和 List 之间的转换？
+26. 如何实现数组和 List 之间的转换？
 
 数组转 List：使用 Arrays. asList(array) 进行转换。
 List 转数组：使用 List 自带的 toArray() 方法。
@@ -268,17 +278,18 @@ list. toArray();
 String[] array = new String[]{"☞精◈彩◈猿◈笔◈记☜","的博客"};
 Arrays. asList(array);
 
-27.ArrayList 和 Vector 的区别是什么？
+27. ArrayList 和 Vector 的区别是什么？
 
 线程安全：Vector 使用了 Synchronized 来实现线程同步，是线程安全的，而 ArrayList 是非线程安全的。
 性能：ArrayList 在性能方面要优于 Vector。
 扩容：ArrayList 和 Vector 都会根据实际的需要动态的调整容量，只不过在 Vector 扩容每次会增加 1 倍，而 ArrayList 只会增加 50%。
-28.Array 和 ArrayList 有何区别？
+28. Array 和 ArrayList 有何区别？
 
 Array 可以存储基本数据类型和对象，ArrayList 只能存储对象。
 Array 是指定固定大小的，而 ArrayList 大小是自动扩展的。
 Array 内置方法没有 ArrayList 多，比如 addAll、removeAll、iteration 等方法只有 ArrayList 有。
-29.在 Queue 中 poll()和 remove()有什么区别？
+
+29. 在 Queue 中 poll()和 remove()有什么区别？
 
 相同点：都是返回第一个元素，并在队列中删除返回的对象。
 不同点：如果没有元素 remove()会直接抛出NoSuchElementException 异常，而 poll()会返回 null。
@@ -290,13 +301,13 @@ System. out. println(queue. poll());
 System. out. println(queue. remove());
 System. out. println(queue. size());
 
-30.哪些集合类是线程安全的？
+30. 哪些集合类是线程安全的？
 Vector、Hashtable、Stack 都是线程安全的，而像 HashMap 则是非线程安全的，不过在 JDK 1.5 之后随着 Java. util. concurrent 并发包的出现，它们也有了自己对应的线程安全类，比如 HashMap 对应的线程安全类就是 ConcurrentHashMap。
 
-31.迭代器 Iterator 是什么？
+31. 迭代器 Iterator 是什么？
 Iterator 接口提供遍历任何 Collection 的接口。我们可以从一个 Collection 中使用迭代器方法来获取迭代器实例。迭代器取代了 Java 集合框架中的 Enumeration，迭代器允许调用者在迭代过程中移除元素。
 
-32.Iterator 怎么使用？有什么特点？
+32. Iterator 怎么使用？有什么特点？
 Iterator 使用代码如下：
 
 List<String> list = new ArrayList<>();
@@ -308,12 +319,12 @@ System. out. println(obj);
 
 Iterator 的特点是更加安全，因为它可以确保，在当前遍历的集合元素被更改的时候，就会抛出 ConcurrentModificationException 异常。
 
-33.Iterator 和 ListIterator 有什么区别？
+33. Iterator 和 ListIterator 有什么区别？
 
 Iterator 可以遍历 Set 和 List 集合，而 ListIterator 只能遍历 List。
 Iterator 只能单向遍历，而 ListIterator 可以双向遍历（向前/后遍历）。
 ListIterator 从 Iterator 接口继承，然后添加了一些额外的功能，比如添加一个元素、替换一个元素、获取前面或后面元素的索引位置。
-34.怎么确保一个集合不能被修改？
+34. 怎么确保一个集合不能被修改？
 可以使用 Collections. unmodifiableCollection(Collection c) 方法来创建一个只读集合，这样改变集合的任何操作都会抛出 Java. lang. UnsupportedOperationException 异常。
 示例代码如下：
 
@@ -326,7 +337,7 @@ System. out. println(list. size());
 ====================================================================
 
 三. Java 多线程模块
-35.并行和并发有什么区别？
+35. 并行和并发有什么区别？
 
 并行：多个处理器或多核处理器同时处理多个任务。
 并发：多个任务在同一个 CPU 核上，按细分的时间片轮流(交替)执行，从逻辑上来看那些任务是同时执行。
