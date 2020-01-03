@@ -252,6 +252,43 @@ sentinel，中文名是哨兵。哨兵是 redis 集群机构中非常重要的�
 
 # 3. redis集群架构
 <a id="markdown-redis集群架构" name="redis集群架构"></a>
+redis的每一个key都会通过哈希算法，存放在一台服务器上。redis集群通过分配分区确定key的存放位置。
+![](assert/redis-cluster1.png)
+
+```
+# 集群配置
+cluster-enabled yes #开启集群模式
+cluster-config-file cluster-7000.conf
+cluster-node-timeout 15000 # 主节点无法访问时间超哥timeout时间将认为，主节点不可用，将进行故障转移
+
+# 如果设置为0，则从服务器将始终尝试对主服务器进行故障转移
+# 而不管主服务器和从服务器之间的链接保持断开状态的时间长短
+# 如果该值为正，则将最大断开时间计算为节点超时值乘以此选项提供的系数
+# 如果节点是从节点，则如果断开主链接的时间超过指定的时间，它将不会尝试启动故障转移
+# 如果节点超时设置为5秒，而有效性因子设置为10
+# 则从服务器与主服务器断开连接超过50秒将不会尝试对其主服务器进行故障转移
+cluster-slave-validity-factor 1
+
+# 一个主机将保持连接的最小数量的从机，以便另一个从机迁移到不再被任何从机覆盖的主机
+cluster-migration-barrier 1
+
+
+# 命令
+# redis5.x
+redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 --cluster-replicas 1
+
+# 重新分配分区,后面要手动分配分区
+redis-cli --cluster reshard 127.0.0.1:7000
+
+# 一键重新划分分区
+redis-cli reshard <host>:<port> --cluster-from <node-id> --cluster-to <node-id> --cluster-slots <number of slots> --cluster-yes
+
+lower 5.x
+./redis-trib.rb create --replicas 1 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005
+
+./redis-trib.rb reshard 127.0.0.1:7000
+
+```
 
 ***
 
